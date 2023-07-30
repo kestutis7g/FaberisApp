@@ -1,6 +1,6 @@
 # FaberisApp
 
-## Tests
+## Time spent
 
 | date  | hours |
 | :---- | ----: |

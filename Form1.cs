@@ -11,7 +11,8 @@ namespace Faberis
     public partial class Form1 : Form
     {
         private List<Node> data;
-        private TreeListView treeListView;
+        private List<Node> assembiesData;
+        private List<Node> partsData;
 
         // constructor
         public Form1()
@@ -19,72 +20,158 @@ namespace Faberis
             InitializeComponent();
             AddTree();
             InitializeData();
+
             FillTree();
+            FillPartsTree();
+
+            this.ContextMenuStrip = contextMenuStrip1;
         }
 
         private void FillTree()
         {
             // set the delegate that the tree uses to know if a node is expandable
-            this.treeListView.CanExpandGetter = x => (x as Node).Children.Count > 0;
+            this.treeListView1.CanExpandGetter = x => (x as Node).Children.Count > 0;
             // set the delegate that the tree uses to know the children of a node
-            this.treeListView.ChildrenGetter = x => (x as Node).Children;
+            this.treeListView1.ChildrenGetter = x => (x as Node).Children;
 
 
             // create the tree columns and set the delegates to print the desired object proerty
             var colItemNumber = new OLVColumn("ItemNumber", "ItemNumber");
             colItemNumber.AspectGetter = x => (x as Node).ItemNumber;
-            colItemNumber.MinimumWidth = 130;
+            colItemNumber.MinimumWidth = 80;
 
             var colComponentName = new OLVColumn("ComponentName", "ComponentName");
             colComponentName.AspectGetter = x => (x as Node).ComponentName;
-            colComponentName.MinimumWidth = 300;
+            colComponentName.Width = 100;
 
             var colReferencedConfiguration = new OLVColumn("ReferencedConfiguration", "ReferencedConfiguration");
             colReferencedConfiguration.AspectGetter = x => (x as Node).ReferencedConfiguration;
-            colReferencedConfiguration.MinimumWidth = 220;
+            colReferencedConfiguration.Width = 100;
 
-            var colComponentID = new OLVColumn("ComponentID", "ComponentID");
-            colComponentID.AspectGetter = x => (x as Node).ComponentID;
-            colComponentID.MinimumWidth = 100;
+            //var colComponentID = new OLVColumn("ComponentID", "ComponentID");
+            //colComponentID.AspectGetter = x => (x as Node).ComponentID;
+            //colComponentID.Width = 100;
 
             var colComponentType = new OLVColumn("ComponentType", "ComponentType");
             colComponentType.AspectGetter = x => (x as Node).ComponentType;
-            colComponentType.MinimumWidth = 100;
+            colComponentType.Width = 100;
 
             var colChildNodeAssemblyDuration = new OLVColumn("ChildNodeAssemblyDuration", "ChildNodeAssemblyDuration");
             colChildNodeAssemblyDuration.AspectGetter = x => (x as Node).ChildNodeAssemblyDuration;
-            colChildNodeAssemblyDuration.MinimumWidth = 100;
+            colChildNodeAssemblyDuration.Width = 100;
 
             var colIndividualComponentAssemblyDuration = new OLVColumn("IndividualComponentAssemblyDuration", "IndividualComponentAssemblyDuration");
             colIndividualComponentAssemblyDuration.AspectGetter = x => (x as Node).IndividualComponentAssemblyDuration;
-            colIndividualComponentAssemblyDuration.MinimumWidth = 100;
+            colIndividualComponentAssemblyDuration.Width = 100;
 
             var colAssemblyToParentNodeDuration = new OLVColumn("AssemblyToParentNodeDuration", "AssemblyToParentNodeDuration");
             colAssemblyToParentNodeDuration.AspectGetter = x => (x as Node).AssemblyToParentNodeDuration;
-            colAssemblyToParentNodeDuration.MinimumWidth = 100;
+            colAssemblyToParentNodeDuration.Width = 100;
 
             var colCombinedAssemblyTime = new OLVColumn("CombinedAssemblyTime", "CombinedAssemblyTime");
             colCombinedAssemblyTime.AspectGetter = x => (x as Node).CombinedAssemblyTime;
-            colCombinedAssemblyTime.MinimumWidth = 100;
+            colCombinedAssemblyTime.Width = 100;
 
-            var colFileLocation = new OLVColumn("FileLocation", "FileLocation");
-            colFileLocation.AspectGetter = x => (x as Node).FileLocation;
-            colFileLocation.MinimumWidth = 100;
+            //var colFileLocation = new OLVColumn("FileLocation", "FileLocation");
+            //colFileLocation.AspectGetter = x => (x as Node).FileLocation;
+            //colFileLocation.MinimumWidth = 100;
+
 
             // add the columns to the tree
-            this.treeListView.Columns.Add(colItemNumber);
-            this.treeListView.Columns.Add(colComponentName);
-            this.treeListView.Columns.Add(colReferencedConfiguration);
-            this.treeListView.Columns.Add(colComponentID);
-            this.treeListView.Columns.Add(colComponentType);
-            this.treeListView.Columns.Add(colChildNodeAssemblyDuration);
-            this.treeListView.Columns.Add(colIndividualComponentAssemblyDuration);
-            this.treeListView.Columns.Add(colAssemblyToParentNodeDuration);
-            this.treeListView.Columns.Add(colCombinedAssemblyTime);
-            this.treeListView.Columns.Add(colFileLocation);
+            this.treeListView1.Columns.Add(colItemNumber);
+            this.treeListView1.Columns.Add(colComponentName);
+            this.treeListView1.Columns.Add(colReferencedConfiguration);
+            //this.treeListView1.Columns.Add(colComponentID);
+            this.treeListView1.Columns.Add(colComponentType);
+            this.treeListView1.Columns.Add(colChildNodeAssemblyDuration);
+            this.treeListView1.Columns.Add(colIndividualComponentAssemblyDuration);
+            this.treeListView1.Columns.Add(colAssemblyToParentNodeDuration);
+            this.treeListView1.Columns.Add(colCombinedAssemblyTime);
+            //this.treeListView1.Columns.Add(colFileLocation);
 
             // set the tree roots
-            this.treeListView.Roots = data;
+            this.treeListView1.Roots = data;
+        }
+
+        private void FillPartsTree()
+        {
+            // set the delegate that the tree uses to know if a node is expandable
+            this.treeListView3.CanExpandGetter = x => (x as Node).Children.Count > 0;
+            // set the delegate that the tree uses to know the children of a node
+            this.treeListView3.ChildrenGetter = x => (x as Node).Children;
+
+
+            // create the tree columns and set the delegates to print the desired object proerty
+            var colItemNumber = new OLVColumn("ItemNumber", "ItemNumber");
+            colItemNumber.AspectGetter = x => (x as Node).ItemNumber;
+            colItemNumber.MinimumWidth = 80;
+
+            var colComponentName = new OLVColumn("ComponentName", "ComponentName");
+            colComponentName.AspectGetter = x => (x as Node).ComponentName;
+            colComponentName.Width = 100;
+
+            var colReferencedConfiguration = new OLVColumn("ReferencedConfiguration", "ReferencedConfiguration");
+            colReferencedConfiguration.AspectGetter = x => (x as Node).ReferencedConfiguration;
+            colReferencedConfiguration.Width = 100;
+
+            var colDescription = new OLVColumn("Description", "Description");
+            colDescription.AspectGetter = x => (x as Node).Description;
+            colDescription.Width = 100;
+
+            //var colComponentID = new OLVColumn("ComponentID", "ComponentID");
+            //colComponentID.AspectGetter = x => (x as Node).ComponentID;
+            //colComponentID.Width = 100;
+
+            var colSurfaceArea = new OLVColumn("SurfaceArea", "SurfaceArea");
+            colSurfaceArea.AspectGetter = x => (x as Node).SurfaceArea;
+            colSurfaceArea.Width = 100;
+
+            var colWeight = new OLVColumn("Weight", "Weight");
+            colWeight.AspectGetter = x => (x as Node).Weight;
+            colWeight.Width = 100;
+
+            var colWelded = new OLVColumn("Welded", "Welded");
+            colWelded.AspectGetter = x => (x as Node).Welded;
+            colWelded.Width = 100;
+
+            var colBent = new OLVColumn("Bent", "Bent");
+            colBent.AspectGetter = x => (x as Node).Bent;
+            colBent.Width = 100;
+
+            var colMaterial = new OLVColumn("Material", "Material");
+            colMaterial.AspectGetter = x => (x as Node).Material;
+            colMaterial.Width = 100;
+
+            var colCoverage = new OLVColumn("Coverage", "Coverage");
+            colCoverage.AspectGetter = x => (x as Node).Coverage;
+            colCoverage.Width = 100;
+
+            var colPrice = new OLVColumn("Price", "Price");
+            colPrice.AspectGetter = x => (x as Node).Price;
+            colPrice.MinimumWidth = 100;
+
+            var colSheetThickness = new OLVColumn("SheetThickness", "SheetThickness");
+            colSheetThickness.AspectGetter = x => (x as Node).SheetThickness;
+            colSheetThickness.MinimumWidth = 100;
+
+
+            // add the columns to the tree
+            this.treeListView3.Columns.Add(colItemNumber);
+            this.treeListView3.Columns.Add(colComponentName);
+            this.treeListView3.Columns.Add(colReferencedConfiguration);
+            this.treeListView3.Columns.Add(colDescription);
+            //this.treeListView3.Columns.Add(colComponentID);
+            this.treeListView3.Columns.Add(colSurfaceArea);
+            this.treeListView3.Columns.Add(colWeight);
+            this.treeListView3.Columns.Add(colWelded);
+            this.treeListView3.Columns.Add(colBent);
+            this.treeListView3.Columns.Add(colMaterial);
+            this.treeListView3.Columns.Add(colCoverage);
+            this.treeListView3.Columns.Add(colPrice);
+            this.treeListView3.Columns.Add(colSheetThickness);
+
+            // set the tree roots
+            this.treeListView3.Roots = partsData;
         }
 
         /// <summary>
@@ -93,6 +180,8 @@ namespace Faberis
         private void InitializeData()
         {
             data = new List<Node>(); 
+            partsData = new List<Node>(); 
+
             var text = File.ReadAllText("..\\..\\Data.csv");
 
             var parts = text.Split('\n');
@@ -144,6 +233,31 @@ namespace Faberis
             FindDataParent(nodeNumber, parentNode.Children, partInfo, currentLevel + 1);
         }
 
+        private Node FormatNode(string data)
+        {
+            var info = data.Split(';');
+            double temp1, temp2, temp3, temp4;
+            NodeType type;
+
+            Enum.TryParse(info[4], out type);
+            double.TryParse(info[5], out temp1);
+            double.TryParse(info[6], out temp2);
+            double.TryParse(info[7], out temp3);
+            double.TryParse(info[8], out temp4);
+
+            return new Node(info[0],
+                                info[1],
+                                info[2],
+                                int.Parse(info[3]),
+                                type,
+                                temp1,
+                                temp2,
+                                temp3,
+                                temp4,
+                                info[9]
+                                );
+        }
+
         /// <summary>
         /// Add node to List<Node>
         /// </summary>
@@ -151,31 +265,19 @@ namespace Faberis
         /// <param name="data">string data of the node</param>
         private void AddNode(List<Node> list, string data)
         {
-            var info = data.Split(';');
-            double temp1, temp2, temp3, temp4;
+            var node = FormatNode(data);
+            list.Add(node);
 
-            double.TryParse(info[5], out temp1);
-            double.TryParse(info[6], out temp2);
-            double.TryParse(info[7], out temp3);
-            double.TryParse(info[8], out temp4);
-
-            list.Add(new Node(info[0],
-                              info[1],
-                              info[2],
-                              int.Parse(info[3]),
-                              info[4],
-                              temp1,
-                              temp2,
-                              temp3,
-                              temp4,
-                              info[9]
-                              ));
+            if(node.ComponentType.ToString() == "Part")
+            {
+                partsData.Add(node);
+            }
         }
 
         private void CalculateChildNodeAssemblyDuration(List<Node> nodes)
         {
             nodes.ForEach(x => {
-                if (x.ComponentType == "Assembly")
+                if (x.ComponentType.ToString() == "Assembly")
                 {
                     x.ChildNodeAssemblyDuration = GetChildrenAssemblyDuration(x.Children);
                     x.CombinedAssemblyTime = (double)(x.ChildNodeAssemblyDuration ?? 0) +
@@ -190,7 +292,7 @@ namespace Faberis
             double assemblyDuration = 0;
             foreach (var node in nodes)//jei vaiku nera taj 0
             {
-                if (node.ComponentType == "Assembly")
+                if (node.ComponentType.ToString() == "Assembly")
                 {
                     node.ChildNodeAssemblyDuration = GetChildrenAssemblyDuration(node.Children);
                     node.CombinedAssemblyTime = (double)(node.ChildNodeAssemblyDuration ?? 0) +
@@ -205,9 +307,44 @@ namespace Faberis
 
         private void AddTree()
         {
-            treeListView = new TreeListView();
-            treeListView.Dock = DockStyle.Fill;
-            this.Controls.Add(treeListView);
+            //treeListView1 = new TreeListView();
+            //treeListView1.Dock = DockStyle.Fill;
+            //this.Controls.Add(treeListView1);
+        }
+
+        private void treeListView1_ItemActivate(object sender, EventArgs e)
+        {
+            foreach (Node item in treeListView1.SelectedObjects)
+            {
+                OpenItemDetailedView(item);
+            }
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (treeListView1.SelectedObjects.Count == 0)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void contextMenuToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var toolStripMenuItem = (ToolStripMenuItem)sender;
+            if (toolStripMenuItem.Name == "Open")
+            {
+                foreach (Node item in treeListView1.SelectedObjects)
+                {
+                    OpenItemDetailedView(item);
+                }
+            }
+        }
+
+        private void OpenItemDetailedView(Node item)
+        {
+            var detailsForm = new DetailsForm();
+            detailsForm.data = item;
+            detailsForm.Show();
         }
     }
 }

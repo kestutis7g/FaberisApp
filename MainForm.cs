@@ -1,4 +1,5 @@
 ﻿using BrightIdeasSoftware;
+using Faberis.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,14 +9,13 @@ using System.Windows.Forms;
 
 namespace Faberis
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private List<Node> data;
-        private List<Node> assembiesData;
         private List<Node> partsData;
 
         // constructor
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             AddTree();
@@ -23,6 +23,7 @@ namespace Faberis
 
             FillTree();
             FillPartsTree();
+            FillAssemblyTree();
 
             this.ContextMenuStrip = contextMenuStrip1;
         }
@@ -33,7 +34,6 @@ namespace Faberis
             this.treeListView1.CanExpandGetter = x => (x as Node).Children.Count > 0;
             // set the delegate that the tree uses to know the children of a node
             this.treeListView1.ChildrenGetter = x => (x as Node).Children;
-
 
             // create the tree columns and set the delegates to print the desired object proerty
             var colItemNumber = new OLVColumn("ItemNumber", "ItemNumber");
@@ -91,6 +91,76 @@ namespace Faberis
 
             // set the tree roots
             this.treeListView1.Roots = data;
+        }
+
+        private void FillAssemblyTree()
+        {
+            // set the delegate that the tree uses to know if a node is expandable
+            this.treeListView2.CanExpandGetter = x => (x as Node).Children.Count > 0 && 
+                                                      (x as Node).Children.Where(c => c.ComponentType.ToString() == "Assembly").Count() > 0;
+
+            // set the delegate that the tree uses to know the children of a node
+            this.treeListView2.ChildrenGetter = x => (x as Node).Children;
+
+            // create the tree columns and set the delegates to print the desired object proerty
+            var colItemNumber = new OLVColumn("ItemNumber", "ItemNumber");
+            colItemNumber.AspectGetter = x => (x as Node).ItemNumber;
+            colItemNumber.MinimumWidth = 80;
+
+            var colComponentName = new OLVColumn("ComponentName", "ComponentName");
+            colComponentName.AspectGetter = x => (x as Node).ComponentName;
+            colComponentName.Width = 100;
+
+            var colReferencedConfiguration = new OLVColumn("ReferencedConfiguration", "ReferencedConfiguration");
+            colReferencedConfiguration.AspectGetter = x => (x as Node).ReferencedConfiguration;
+            colReferencedConfiguration.Width = 100;
+
+            //var colComponentID = new OLVColumn("ComponentID", "ComponentID");
+            //colComponentID.AspectGetter = x => (x as Node).ComponentID;
+            //colComponentID.Width = 100;
+
+            var colComponentType = new OLVColumn("ComponentType", "ComponentType");
+            colComponentType.AspectGetter = x => (x as Node).ComponentType;
+            colComponentType.Width = 100;
+
+            var colChildNodeAssemblyDuration = new OLVColumn("ChildNodeAssemblyDuration", "ChildNodeAssemblyDuration");
+            colChildNodeAssemblyDuration.AspectGetter = x => (x as Node).ChildNodeAssemblyDuration;
+            colChildNodeAssemblyDuration.Width = 100;
+
+            var colIndividualComponentAssemblyDuration = new OLVColumn("IndividualComponentAssemblyDuration", "IndividualComponentAssemblyDuration");
+            colIndividualComponentAssemblyDuration.AspectGetter = x => (x as Node).IndividualComponentAssemblyDuration;
+            colIndividualComponentAssemblyDuration.Width = 100;
+
+            var colAssemblyToParentNodeDuration = new OLVColumn("AssemblyToParentNodeDuration", "AssemblyToParentNodeDuration");
+            colAssemblyToParentNodeDuration.AspectGetter = x => (x as Node).AssemblyToParentNodeDuration;
+            colAssemblyToParentNodeDuration.Width = 100;
+
+            var colCombinedAssemblyTime = new OLVColumn("CombinedAssemblyTime", "CombinedAssemblyTime");
+            colCombinedAssemblyTime.AspectGetter = x => (x as Node).CombinedAssemblyTime;
+            colCombinedAssemblyTime.Width = 100;
+
+            //var colFileLocation = new OLVColumn("FileLocation", "FileLocation");
+            //colFileLocation.AspectGetter = x => (x as Node).FileLocation;
+            //colFileLocation.MinimumWidth = 100;
+
+
+            // add the columns to the tree
+            this.treeListView2.Columns.Add(colItemNumber);
+            this.treeListView2.Columns.Add(colComponentName);
+            this.treeListView2.Columns.Add(colReferencedConfiguration);
+            //this.treeListView2.Columns.Add(colComponentID);
+            this.treeListView2.Columns.Add(colComponentType);
+            this.treeListView2.Columns.Add(colChildNodeAssemblyDuration);
+            this.treeListView2.Columns.Add(colIndividualComponentAssemblyDuration);
+            this.treeListView2.Columns.Add(colAssemblyToParentNodeDuration);
+            this.treeListView2.Columns.Add(colCombinedAssemblyTime);
+            //this.treeListView2.Columns.Add(colFileLocation);
+
+            // set the tree roots
+            this.treeListView2.Roots = data;
+
+            this.treeListView2.AdditionalFilter = TextMatchFilter.Contains(this.treeListView2, "Assembly");
+            this.treeListView2.DefaultRenderer = new HighlightTextRenderer();
         }
 
         private void FillPartsTree()
@@ -346,5 +416,24 @@ namespace Faberis
             detailsForm.data = item;
             detailsForm.Show();
         }
+
+        private void seachTextBox1_TextChanged(object sender, EventArgs e)
+        {
+            var filter = TextMatchFilter.Contains(this.treeListView1, seachTextBox1.Text);
+            this.treeListView1.AdditionalFilter = filter;
+            this.treeListView1.DefaultRenderer = new HighlightTextRenderer(filter);
+        }
+
+        private void seachTextBox2_TextChanged(object sender, EventArgs e)
+        {
+            var filter = TextMatchFilter.Contains(this.treeListView2, new string[] { seachTextBox2.Text, "Assembly" });
+            //filter = TextMatchFilter.
+            //highlightFilter only highlights user typed substring
+            var highlightFilter = TextMatchFilter.Contains(this.treeListView2, seachTextBox2.Text);
+
+            this.treeListView2.AdditionalFilter = filter;
+            this.treeListView2.DefaultRenderer = new HighlightTextRenderer(highlightFilter);
+        }
+
     }
 }

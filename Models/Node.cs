@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 
-namespace Faberis
+namespace Faberis.Models
 {
     public class Node
     {

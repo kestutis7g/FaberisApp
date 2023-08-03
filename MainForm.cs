@@ -26,8 +26,11 @@ namespace Faberis
 
             this.ContextMenuStrip = contextMenuStrip1;
 
-            //this.splitContainer1.SplitterDistance = (80 * this.splitContainer1.Size.Width / 100);
-            //this.splitContainer2.SplitterDistance = (80 * this.splitContainer2.Size.Width / 100);
+            //Fix split screen splitter size
+            this.splitContainer1.SplitterDistance = (80 * this.splitContainer1.Size.Width / 100);
+            this.splitContainer2.SplitterDistance = (80 * this.splitContainer2.Size.Width / 100);
+
+            refreshTotalAssemblyDuration();
         }
 
         private void FillTree()
@@ -41,6 +44,7 @@ namespace Faberis
             var colItemNumber = new OLVColumn("ItemNumber", "ItemNumber");
             colItemNumber.AspectGetter = x => (x as Node).ItemNumber;
             colItemNumber.MinimumWidth = 80;
+            colItemNumber.HeaderCheckBox = true;
 
             var colComponentName = new OLVColumn("ComponentName", "ComponentName");
             colComponentName.AspectGetter = x => (x as Node).ComponentName;
@@ -50,9 +54,10 @@ namespace Faberis
             colReferencedConfiguration.AspectGetter = x => (x as Node).ReferencedConfiguration;
             colReferencedConfiguration.Width = 100;
 
-            //var colComponentID = new OLVColumn("ComponentID", "ComponentID");
-            //colComponentID.AspectGetter = x => (x as Node).ComponentID;
-            //colComponentID.Width = 100;
+            var colComponentID = new OLVColumn("ComponentID", "ComponentID");
+            colComponentID.AspectGetter = x => (x as Node).ComponentID;
+            colComponentID.Width = 100;
+            colComponentID.IsVisible = false;
 
             var colComponentType = new OLVColumn("ComponentType", "ComponentType");
             colComponentType.AspectGetter = x => (x as Node).ComponentType;
@@ -74,10 +79,10 @@ namespace Faberis
             colCombinedAssemblyTime.AspectGetter = x => (x as Node).CombinedAssemblyTime;
             colCombinedAssemblyTime.Width = 100;
 
-            //var colFileLocation = new OLVColumn("FileLocation", "FileLocation");
-            //colFileLocation.AspectGetter = x => (x as Node).FileLocation;
-            //colFileLocation.MinimumWidth = 100;
-
+            var colFileLocation = new OLVColumn("FileLocation", "FileLocation");
+            colFileLocation.AspectGetter = x => (x as Node).FileLocation;
+            colFileLocation.MinimumWidth = 100;
+            colFileLocation.IsVisible = false;
 
             // add the columns to the tree
             this.treeListView1.Columns.Add(colItemNumber);
@@ -90,6 +95,19 @@ namespace Faberis
             this.treeListView1.Columns.Add(colAssemblyToParentNodeDuration);
             this.treeListView1.Columns.Add(colCombinedAssemblyTime);
             //this.treeListView1.Columns.Add(colFileLocation);
+
+            //add columns for column hiding
+            this.treeListView1.AllColumns.Add(colItemNumber);
+            this.treeListView1.AllColumns.Add(colComponentName);
+            this.treeListView1.AllColumns.Add(colReferencedConfiguration);
+            this.treeListView1.AllColumns.Add(colComponentID);
+            this.treeListView1.AllColumns.Add(colComponentType);
+            this.treeListView1.AllColumns.Add(colChildNodeAssemblyDuration);
+            this.treeListView1.AllColumns.Add(colIndividualComponentAssemblyDuration);
+            this.treeListView1.AllColumns.Add(colAssemblyToParentNodeDuration);
+            this.treeListView1.AllColumns.Add(colCombinedAssemblyTime);
+            this.treeListView1.AllColumns.Add(colFileLocation);
+
 
             // set the tree roots
             this.treeListView1.Roots = data;
@@ -309,6 +327,16 @@ namespace Faberis
             return assemblyDuration;
         }
 
+        private void refreshTotalAssemblyDuration()
+        {
+            double totalAssemblyDuration = 0;
+            foreach (var item in data)
+            {
+                totalAssemblyDuration += (double)(item.AssemblyToParentNodeDuration + item.CombinedAssemblyTime);
+            }
+            totalAssemblyTimeLabel.Text = "Total assembly time: " + totalAssemblyDuration.ToString() + "h";
+        }
+
         private void AddTree()
         {
             //treeListView1 = new TreeListView();
@@ -375,7 +403,11 @@ namespace Faberis
                 item.ReferencedConfiguration = "TESTAS";
                 item.ComponentName = "TESTAS";
             }
-            int g = 0;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            int a = 0;
         }
     }
 }

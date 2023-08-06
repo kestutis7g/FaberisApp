@@ -10,7 +10,6 @@ namespace Faberis
         public DetailsForm()
         {
             InitializeComponent();
-            
         }
 
         private void DetailsForm_Load(object sender, System.EventArgs e)

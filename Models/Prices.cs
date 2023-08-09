@@ -12,7 +12,9 @@ namespace Faberis.Models
 {
     internal class Prices
     {
-        private List<Price> prices = new List<Price>();
+        private List<Price> allData = new List<Price>();
+        private List<Price> workPrices = new List<Price>();
+        private List<Price> materialPrices = new List<Price>();
 
         private OleDbConnection mdbConnection = new OleDbConnection(
             "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\DB\\Database.mdb"));
@@ -47,9 +49,14 @@ namespace Faberis.Models
             mdbConnection.Close();
         }
 
-        public List<Price> Get()
+        /// <summary>
+        /// Refresh price lists
+        /// </summary>
+        /// <returns>Result if refresh was successful</returns>
+        public bool Refresh()
         {
-            this.prices = new List<Price>();
+            this.workPrices = new List<Price>();
+            this.materialPrices = new List<Price>();
 
             mdbConnection.Open();
             string query =
@@ -61,21 +68,76 @@ namespace Faberis.Models
                 OleDbDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    this.prices.Add(new Price((int)reader[0],
-                                              reader[1].ToString(),
-                                              (double)reader[2],
-                                              reader[3].ToString(),
-                                              (DateTime)reader[4]));
+                    var price = new Price((int)reader[0],
+                                          reader[1].ToString(),
+                                          (double)reader[2],
+                                          reader[3].ToString(),
+                                          (DateTime)reader[4]);
+
+                    this.allData.Add(price);
+
+                    if (reader[3].ToString() == "Darbo")
+                    {
+                        this.workPrices.Add(price);
+                    }
+                    else if(reader[3].ToString() == "Žaliavų")
+                    {
+                        this.materialPrices.Add(price);
+                    }
                 }
                 reader.Close();
+                mdbConnection.Close();
+                return true;
             }
             catch (Exception e)
             {
                 MessageBox.Show("Details: " + e.ToString(), "Database request error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                mdbConnection.Close();
+                return false;
             }
-            mdbConnection.Close();
+        }
 
-            return this.prices;
+        public List<Price> GetWorkPrices()
+        {
+            return this.workPrices;
+        }
+        public List<Price> GetMaterialPrices()
+        {
+            return this.materialPrices;
+        }
+        public List<Price> GetAllPrices()
+        {
+            return this.allData;
+        }
+
+        public Price GetById(int id)
+        {
+            mdbConnection.Open();
+            string query =
+                @"SELECT Id, Name, Data, GroupName, UpdatedAt FROM Prices WHERE Id = " + id + ";";
+            OleDbCommand command = new OleDbCommand(query, mdbConnection);
+            try
+            {
+                OleDbDataReader reader = command.ExecuteReader();
+                Price price = null;
+                if(reader.Read())
+                {
+                    price = new Price((int)reader[0],
+                                          reader[1].ToString(),
+                                          (double)reader[2],
+                                          reader[3].ToString(),
+                                          (DateTime)reader[4]);
+                }
+                reader.Close();
+                mdbConnection.Close();
+                return price;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Details: " + e.ToString(), "Database request error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                mdbConnection.Close();
+                return null;
+            }
         }
 
         public void Add(Price price)

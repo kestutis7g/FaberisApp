@@ -10,17 +10,25 @@ namespace Faberis.Utils
     internal class Calculations
     {
         private List<Node> data { get; set; }
+        private List<Node> partsData { get; set; }
 
         public double rootChildNodeAssemblyDuration = 0;
+        public int totalParts = 0;
+        public double totalPartsCost = 0;
 
-        public Calculations(List<Node> data) 
+        public Calculations()
         {
-            this.data = data;
+            
         }
 
-        public void Calculate()
+        public void Calculate(List<Node> data, List<Node> partsData)
         {
+            this.data = data;
+            this.partsData = partsData;
+
             refreshRootChildNodeAssemblyDuration();
+            refreshTotalParts();
+            refreshTotalPartsCost();
         }
         private void refreshRootChildNodeAssemblyDuration()
         {
@@ -30,6 +38,20 @@ namespace Faberis.Utils
                 assemblyDuration += (double)item.CombinedAssemblyTime;
             }
             this.rootChildNodeAssemblyDuration = assemblyDuration;
+        }
+
+        private void refreshTotalParts()
+        {
+            this.totalParts = partsData.Count();
+        }
+        private void refreshTotalPartsCost()
+        {
+            double cost = 0;
+            foreach (var part in this.partsData)
+            {
+                cost += part.Price ?? default(int);
+            }
+            totalPartsCost = cost;
         }
     }
 }

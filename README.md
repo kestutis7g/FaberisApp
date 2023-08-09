@@ -13,5 +13,6 @@ In project properties > Build, uncheck "Prefer 32-bit" option.
 | 08-01 |     3 |
 | 08-02 |     4 |
 | 08-03 |     5 |
-| 08-05 |     4 |
+| 08-05 |     5 |
 | 08-06 |     4 |
+| 08-09 |     4 |

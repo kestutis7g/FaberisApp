@@ -18,6 +18,7 @@ namespace Faberis
         private Calculations calculations;
 
         private Prices prices;
+        private bool stainlessSteelToolBox = false;
 
         // constructor
         public MainForm()
@@ -37,10 +38,11 @@ namespace Faberis
             this.splitContainer2.SplitterDistance = (80 * this.splitContainer2.Size.Width / 100);
             this.splitContainer3.SplitterDistance = (80 * this.splitContainer3.Size.Width / 100);
 
-            calculations = new Calculations(data);
+            this.prices = new Prices();
+            this.calculations = new Calculations();
+
             RefreshCalculations();
 
-            this.prices = new Prices();
         }
 
         private void FillTree()
@@ -436,18 +438,53 @@ namespace Faberis
 
         private void RefreshCalculations()
         {
-            calculations.Calculate();
+            calculations.Calculate(data, partsData);
 
+            //ASSEMBLY TAB
             double individualComponentsAssemblyDuration = 0;
             double assemblyToParentDuration = 0;
-
             double.TryParse(individualComponentsAssemblyTextBox.Text, out individualComponentsAssemblyDuration);
             double.TryParse(assemblyToParentTextBox.Text, out assemblyToParentDuration);
 
-            rootChildNodeAssemblyTime.Text = "Child node assembly time: : " + calculations.rootChildNodeAssemblyDuration.ToString() + "h";
-            combinedAssemblyDurationLabel.Text = "Combined assembly duration: " + (calculations.rootChildNodeAssemblyDuration +
-                                                                                  individualComponentsAssemblyDuration +
-                                                                                  assemblyToParentDuration) + "h";
+            double combinedAssemblyDuration = calculations.rootChildNodeAssemblyDuration + individualComponentsAssemblyDuration + assemblyToParentDuration;
+            double assemblyPrice = this.prices.GetById(3).Value;
+            double totalAssemblyCost = assemblyPrice * combinedAssemblyDuration;
+
+            rootChildNodeAssemblyTime.Text = "Child node assembly time: " + calculations.rootChildNodeAssemblyDuration + "h";
+            combinedAssemblyDurationLabel.Text = "Combined assembly duration: " + combinedAssemblyDuration + "h";
+            assemblyCostLabel.Text = "Assembly cost: " + assemblyPrice + " €/h";
+            totalAssemblyCostLabel.Text        = "Total assembly cost: " + totalAssemblyCost + " €";
+            totalAssemblyCostGeneralLabel.Text = "Total assembly cost: " + totalAssemblyCost + " €";
+
+            //PARTS TAB
+            totalPartsLabel.Text = "Total parts: " + calculations.totalParts;
+            totalPartsCostLabel.Text = "Total parts cost: " + calculations.totalPartsCost + " €";
+
+            double toolboxPrice = 0;
+            double toolboxWeight = 0;
+            double.TryParse(toolboxWeightTextBox.Text, out toolboxWeight);
+
+            switch (stainlessSteelToolBox)
+            {
+                case false:
+                    toolboxPrice = this.prices.GetById(10).Value;
+                    break;
+                case true:
+                    toolboxPrice = this.prices.GetById(11).Value;
+                    break;
+                default:
+                    toolboxPrice = 0;
+                    break;
+            }
+
+            toolboxPriceLabel.Text = "Toolbox price: " + toolboxPrice + " €/kg";
+            toolboxTotalPriceLabel.Text = "Toolbox price: " + (toolboxPrice * toolboxWeight) + " €";
+
+            double totalPartsTabCost = calculations.totalPartsCost + (toolboxPrice * toolboxWeight);
+            totalPartsTabCostLabel.Text        = "Total parts & toolbox cost: " + totalPartsTabCost + " €";
+            totalPartsTabCostGeneralLabel.Text = "Total parts & toolbox cost: " + totalPartsTabCost + " €";
+
+            finalPriceLabel.Text = "Final price: " + (totalPartsTabCost + totalAssemblyCost) + " €";
         }
 
         private void AddTree()
@@ -462,9 +499,9 @@ namespace Faberis
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void treeListView1_ItemActivate(object sender, EventArgs e)
+        private void treeListView_ItemActivate(object sender, EventArgs e)
         {
-            foreach (Node item in treeListView1.SelectedObjects)
+            foreach (Node item in (sender as TreeListView).SelectedObjects)
             {
                 OpenItemDetailedView(item);
             }
@@ -545,7 +582,7 @@ namespace Faberis
             var pricesForm = new PricesForm();
             pricesForm.ShowDialog();
 
-            this.prices.Get();
+            //this.prices.Get();
         }
 
         private void numbersOnlyTextBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -573,6 +610,12 @@ namespace Faberis
 
         private void textBox_TextChanged(object sender, EventArgs e)
         {
+            RefreshCalculations();
+        }
+
+        private void useSteel_CheckedChanged(object sender, EventArgs e)
+        {
+            this.stainlessSteelToolBox = this.useStainlessSteel.Checked;
             RefreshCalculations();
         }
     }

@@ -17,26 +17,45 @@ namespace Faberis
         public PricesForm()
         {
             InitializeComponent();
-            DataTable dt = new DataTable();
-            dt.Columns.Add(new DataColumn("Id", typeof(int)));
-            dt.Columns.Add(new DataColumn("Name", typeof(string)));
-            dt.Columns.Add(new DataColumn("Value", typeof(double)));
-            dt.Columns.Add(new DataColumn("UpdatedAt", typeof(DateTime)));
+
+            prices.Refresh();
+            var workPricesData = prices.GetWorkPrices();
+            var materialPricesData = prices.GetMaterialPrices();
+
+            //INITIALIZE WORK PRICES TABLE
+            DataTable wdt = new DataTable();
+            wdt.Columns.Add(new DataColumn("Id", typeof(int)));
+            wdt.Columns.Add(new DataColumn("Name", typeof(string)));
+            wdt.Columns.Add(new DataColumn("Value", typeof(double)));
+            wdt.Columns.Add(new DataColumn("UpdatedAt", typeof(DateTime)));
 
             //dt.Columns["colStatus"].Expression = String.Format("IIF(colBestBefore < #{0}#, 'Ok','Not ok')", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
-
-            var data = prices.Get();
-
-            foreach (var item in data)
+            foreach (var item in workPricesData)
             {
-                dt.Rows.Add(item.Id, item.Name, item.Value, item.UpdatedAt);
+                wdt.Rows.Add(item.Id, item.Name, item.Value, item.UpdatedAt);
             }
 
-            this.dataGridView1.DataSource = dt;
-            this.dataGridView1.Columns["Id"].Visible = false;
-            this.dataGridView1.Columns["UpdatedAt"].ReadOnly = true;
+            this.workDataGridView.DataSource = wdt;
+            this.workDataGridView.Columns["Id"].Visible = false;
+            this.workDataGridView.Columns["UpdatedAt"].ReadOnly = true;
             //this.dataGridView1.DataSource = prices.Get();
+
+            //INITIALIZE MATERIAL PRICES TABLE
+            DataTable mdt = new DataTable();
+            mdt.Columns.Add(new DataColumn("Id", typeof(int)));
+            mdt.Columns.Add(new DataColumn("Name", typeof(string)));
+            mdt.Columns.Add(new DataColumn("Value", typeof(double)));
+            mdt.Columns.Add(new DataColumn("UpdatedAt", typeof(DateTime)));
+
+            foreach (var item in materialPricesData)
+            {
+                mdt.Rows.Add(item.Id, item.Name, item.Value, item.UpdatedAt);
+            }
+
+            this.materialDataGridView.DataSource = mdt;
+            this.materialDataGridView.Columns["Id"].Visible = false;
+            this.materialDataGridView.Columns["UpdatedAt"].ReadOnly = true;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -46,34 +65,51 @@ namespace Faberis
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            var data = prices.Get();
-            foreach (DataGridViewRow row in dataGridView1.Rows)
+            var data = prices.GetAllPrices();
+            foreach (DataGridViewRow row in workDataGridView.Rows)
             {
-                if(row.Cells["Id"].Value == null)
-                {
-                    continue;
-                }
-
-                int id = -1;
-                int.TryParse(row.Cells["Id"].Value.ToString(), out id);
-                var price = data.FirstOrDefault(x => x.Id == id);
-
-                if(price == null)
-                {
-                    prices.Add(new Price(row.Cells["Name"].Value.ToString(),
-                                         (double)row.Cells["Value"].Value,
-                                         "Darbo"));
-                    continue;
-                }
-                else if(!EqualPrices(price, row))
-                {
-                    prices.Update(id, new Price(row.Cells["Name"].Value.ToString(),
-                                                (double)row.Cells["Value"].Value,
-                                                "Darbo"));
-                    continue;
-                }
+                SaveTableRow(row, data, "Darbo");
+            }
+            foreach (DataGridViewRow row in materialDataGridView.Rows)
+            {
+                SaveTableRow(row, data, "Žaliavų");
             }
             this.Close();
+        }
+
+        /// <summary>
+        /// Compares if row was changed and saves changes
+        /// </summary>
+        /// <param name="row">data to be updated</param>
+        /// <param name="allData">data to compare row changes with</param>
+        /// <returns>true if saved, false if row was not changed</returns>
+        private bool SaveTableRow(DataGridViewRow row, List<Price> allData, string priceGroup)
+        {
+            if (row.Cells["Id"].Value == null)
+            {
+                return false;
+            }
+
+            int id = -1;
+            int.TryParse(row.Cells["Id"].Value.ToString(), out id);
+            var price = allData.FirstOrDefault(x => x.Id == id);
+
+            if (price == null)
+            {
+                prices.Add(new Price(row.Cells["Name"].Value.ToString(),
+                                     (double)row.Cells["Value"].Value,
+                                     priceGroup));
+                return true;
+            }
+            else if (!EqualPrices(price, row))
+            {
+                prices.Update(id, new Price(row.Cells["Name"].Value.ToString(),
+                                            (double)row.Cells["Value"].Value,
+                                            priceGroup));
+                return true;
+            }
+
+            return false;
         }
 
         private bool EqualPrices(Price price, DataGridViewRow row)

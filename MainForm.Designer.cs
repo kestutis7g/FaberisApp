@@ -38,8 +38,21 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.finalPriceLabel = new System.Windows.Forms.Label();
+            this.totalAssemblyCostGeneralLabel = new System.Windows.Forms.Label();
+            this.totalPartsTabCostGeneralLabel = new System.Windows.Forms.Label();
             this.tabPageParts = new System.Windows.Forms.TabPage();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.totalPartsTabCostLabel = new System.Windows.Forms.Label();
+            this.toolboxTotalPriceLabel = new System.Windows.Forms.Label();
+            this.toolboxPriceLabel = new System.Windows.Forms.Label();
+            this.toolboxWeightTextBox = new System.Windows.Forms.TextBox();
+            this.toolboxWeightLabel = new System.Windows.Forms.Label();
+            this.toolboxTypeLabel = new System.Windows.Forms.Label();
+            this.useStainlessSteel = new System.Windows.Forms.RadioButton();
+            this.useBlackSteel = new System.Windows.Forms.RadioButton();
+            this.totalPartsCostLabel = new System.Windows.Forms.Label();
+            this.totalPartsLabel = new System.Windows.Forms.Label();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.treeListView2 = new BrightIdeasSoftware.TreeListView();
             this.seachTextBox2 = new System.Windows.Forms.TextBox();
@@ -47,6 +60,8 @@
             this.button3 = new System.Windows.Forms.Button();
             this.tabPageAssemblies = new System.Windows.Forms.TabPage();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.totalAssemblyCostLabel = new System.Windows.Forms.Label();
+            this.assemblyCostLabel = new System.Windows.Forms.Label();
             this.combinedAssemblyDurationLabel = new System.Windows.Forms.Label();
             this.assemblyToParentTextBox = new System.Windows.Forms.TextBox();
             this.assemblyToParentLabel = new System.Windows.Forms.Label();
@@ -62,21 +77,6 @@
             this.Open = new System.Windows.Forms.ToolStripMenuItem();
             this.panel7 = new System.Windows.Forms.Panel();
             this.pricesButton = new System.Windows.Forms.Button();
-            this.assemblyCostLabel = new System.Windows.Forms.Label();
-            this.totalAssemblyCostLabel = new System.Windows.Forms.Label();
-            this.totalPartsLabel = new System.Windows.Forms.Label();
-            this.totalPartsCostLabel = new System.Windows.Forms.Label();
-            this.useBlackSteel = new System.Windows.Forms.RadioButton();
-            this.useStainlessSteel = new System.Windows.Forms.RadioButton();
-            this.toolboxTypeLabel = new System.Windows.Forms.Label();
-            this.toolboxWeightLabel = new System.Windows.Forms.Label();
-            this.toolboxWeightTextBox = new System.Windows.Forms.TextBox();
-            this.toolboxPriceLabel = new System.Windows.Forms.Label();
-            this.toolboxTotalPriceLabel = new System.Windows.Forms.Label();
-            this.totalPartsTabCostLabel = new System.Windows.Forms.Label();
-            this.totalPartsTabCostGeneralLabel = new System.Windows.Forms.Label();
-            this.totalAssemblyCostGeneralLabel = new System.Windows.Forms.Label();
-            this.finalPriceLabel = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -152,7 +152,7 @@
             this.splitContainer1.Panel2.AutoScroll = true;
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.LightGray;
             this.splitContainer1.Panel2.Controls.Add(this.panel1);
-            this.splitContainer1.Size = new System.Drawing.Size(1323, 738);
+            this.splitContainer1.Size = new System.Drawing.Size(1323, 740);
             this.splitContainer1.SplitterDistance = 1085;
             this.splitContainer1.TabIndex = 5;
             // 
@@ -160,12 +160,10 @@
             // 
             this.treeListView1.AllowCellEditorsToProcessMouseWheel = false;
             this.treeListView1.AllowColumnReorder = true;
-            this.treeListView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.treeListView1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.treeListView1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.treeListView1.HideSelection = false;
-            this.treeListView1.Location = new System.Drawing.Point(3, 35);
+            this.treeListView1.Location = new System.Drawing.Point(0, 35);
             this.treeListView1.Name = "treeListView1";
             this.treeListView1.SelectColumnsMenuStaysOpen = false;
             this.treeListView1.SelectColumnsOnRightClickBehaviour = BrightIdeasSoftware.ObjectListView.ColumnSelectBehaviour.Submenu;
@@ -173,7 +171,7 @@
             this.treeListView1.ShowGroups = false;
             this.treeListView1.ShowImagesOnSubItems = true;
             this.treeListView1.ShowItemToolTips = true;
-            this.treeListView1.Size = new System.Drawing.Size(1078, 700);
+            this.treeListView1.Size = new System.Drawing.Size(1085, 705);
             this.treeListView1.TabIndex = 3;
             this.treeListView1.UseCompatibleStateImageBehavior = false;
             this.treeListView1.UseFilterIndicator = true;
@@ -238,6 +236,33 @@
             this.panel4.Size = new System.Drawing.Size(1320, 100);
             this.panel4.TabIndex = 2;
             // 
+            // finalPriceLabel
+            // 
+            this.finalPriceLabel.AutoSize = true;
+            this.finalPriceLabel.Location = new System.Drawing.Point(371, 19);
+            this.finalPriceLabel.Name = "finalPriceLabel";
+            this.finalPriceLabel.Size = new System.Drawing.Size(111, 20);
+            this.finalPriceLabel.TabIndex = 12;
+            this.finalPriceLabel.Text = "Final price: 0 €";
+            // 
+            // totalAssemblyCostGeneralLabel
+            // 
+            this.totalAssemblyCostGeneralLabel.AutoSize = true;
+            this.totalAssemblyCostGeneralLabel.Location = new System.Drawing.Point(15, 58);
+            this.totalAssemblyCostGeneralLabel.Name = "totalAssemblyCostGeneralLabel";
+            this.totalAssemblyCostGeneralLabel.Size = new System.Drawing.Size(178, 20);
+            this.totalAssemblyCostGeneralLabel.TabIndex = 11;
+            this.totalAssemblyCostGeneralLabel.Text = "Total assembly cost: 0 €";
+            // 
+            // totalPartsTabCostGeneralLabel
+            // 
+            this.totalPartsTabCostGeneralLabel.AutoSize = true;
+            this.totalPartsTabCostGeneralLabel.Location = new System.Drawing.Point(15, 19);
+            this.totalPartsTabCostGeneralLabel.Name = "totalPartsTabCostGeneralLabel";
+            this.totalPartsTabCostGeneralLabel.Size = new System.Drawing.Size(234, 20);
+            this.totalPartsTabCostGeneralLabel.TabIndex = 10;
+            this.totalPartsTabCostGeneralLabel.Text = "Total parts and toolbox cost: 0 €";
+            // 
             // tabPageParts
             // 
             this.tabPageParts.Controls.Add(this.panel5);
@@ -268,6 +293,103 @@
             this.panel5.Size = new System.Drawing.Size(1320, 100);
             this.panel5.TabIndex = 7;
             // 
+            // totalPartsTabCostLabel
+            // 
+            this.totalPartsTabCostLabel.AutoSize = true;
+            this.totalPartsTabCostLabel.Location = new System.Drawing.Point(813, 42);
+            this.totalPartsTabCostLabel.Name = "totalPartsTabCostLabel";
+            this.totalPartsTabCostLabel.Size = new System.Drawing.Size(234, 20);
+            this.totalPartsTabCostLabel.TabIndex = 9;
+            this.totalPartsTabCostLabel.Text = "Total parts and toolbox cost: 0 €";
+            // 
+            // toolboxTotalPriceLabel
+            // 
+            this.toolboxTotalPriceLabel.AutoSize = true;
+            this.toolboxTotalPriceLabel.Location = new System.Drawing.Point(519, 72);
+            this.toolboxTotalPriceLabel.Name = "toolboxTotalPriceLabel";
+            this.toolboxTotalPriceLabel.Size = new System.Drawing.Size(132, 20);
+            this.toolboxTotalPriceLabel.TabIndex = 8;
+            this.toolboxTotalPriceLabel.Text = "Toolbox price: 0 €";
+            // 
+            // toolboxPriceLabel
+            // 
+            this.toolboxPriceLabel.AutoSize = true;
+            this.toolboxPriceLabel.Location = new System.Drawing.Point(519, 44);
+            this.toolboxPriceLabel.Name = "toolboxPriceLabel";
+            this.toolboxPriceLabel.Size = new System.Drawing.Size(153, 20);
+            this.toolboxPriceLabel.TabIndex = 7;
+            this.toolboxPriceLabel.Text = "Toolbox price: 0 €/kg";
+            // 
+            // toolboxWeightTextBox
+            // 
+            this.toolboxWeightTextBox.Location = new System.Drawing.Point(639, 10);
+            this.toolboxWeightTextBox.Name = "toolboxWeightTextBox";
+            this.toolboxWeightTextBox.Size = new System.Drawing.Size(100, 26);
+            this.toolboxWeightTextBox.TabIndex = 6;
+            this.toolboxWeightTextBox.Text = "0";
+            this.toolboxWeightTextBox.TextChanged += new System.EventHandler(this.textBox_TextChanged);
+            this.toolboxWeightTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.numbersOnlyTextBox_KeyPress);
+            // 
+            // toolboxWeightLabel
+            // 
+            this.toolboxWeightLabel.AutoSize = true;
+            this.toolboxWeightLabel.Location = new System.Drawing.Point(519, 13);
+            this.toolboxWeightLabel.Name = "toolboxWeightLabel";
+            this.toolboxWeightLabel.Size = new System.Drawing.Size(114, 20);
+            this.toolboxWeightLabel.TabIndex = 5;
+            this.toolboxWeightLabel.Text = "Toolbox weight";
+            // 
+            // toolboxTypeLabel
+            // 
+            this.toolboxTypeLabel.AutoSize = true;
+            this.toolboxTypeLabel.Location = new System.Drawing.Point(302, 13);
+            this.toolboxTypeLabel.Name = "toolboxTypeLabel";
+            this.toolboxTypeLabel.Size = new System.Drawing.Size(102, 20);
+            this.toolboxTypeLabel.TabIndex = 4;
+            this.toolboxTypeLabel.Text = "Toolbox type:";
+            // 
+            // useStainlessSteel
+            // 
+            this.useStainlessSteel.AutoSize = true;
+            this.useStainlessSteel.Location = new System.Drawing.Point(306, 70);
+            this.useStainlessSteel.Name = "useStainlessSteel";
+            this.useStainlessSteel.Size = new System.Drawing.Size(137, 24);
+            this.useStainlessSteel.TabIndex = 3;
+            this.useStainlessSteel.Text = "Stainless steel";
+            this.useStainlessSteel.UseVisualStyleBackColor = true;
+            this.useStainlessSteel.CheckedChanged += new System.EventHandler(this.useSteel_CheckedChanged);
+            // 
+            // useBlackSteel
+            // 
+            this.useBlackSteel.AutoSize = true;
+            this.useBlackSteel.Checked = true;
+            this.useBlackSteel.Location = new System.Drawing.Point(306, 40);
+            this.useBlackSteel.Name = "useBlackSteel";
+            this.useBlackSteel.Size = new System.Drawing.Size(111, 24);
+            this.useBlackSteel.TabIndex = 2;
+            this.useBlackSteel.TabStop = true;
+            this.useBlackSteel.Text = "Black steel";
+            this.useBlackSteel.UseVisualStyleBackColor = true;
+            this.useBlackSteel.CheckedChanged += new System.EventHandler(this.useSteel_CheckedChanged);
+            // 
+            // totalPartsCostLabel
+            // 
+            this.totalPartsCostLabel.AutoSize = true;
+            this.totalPartsCostLabel.Location = new System.Drawing.Point(15, 49);
+            this.totalPartsCostLabel.Name = "totalPartsCostLabel";
+            this.totalPartsCostLabel.Size = new System.Drawing.Size(148, 20);
+            this.totalPartsCostLabel.TabIndex = 1;
+            this.totalPartsCostLabel.Text = "Total parts cost: 0 €";
+            // 
+            // totalPartsLabel
+            // 
+            this.totalPartsLabel.AutoSize = true;
+            this.totalPartsLabel.Location = new System.Drawing.Point(15, 13);
+            this.totalPartsLabel.Name = "totalPartsLabel";
+            this.totalPartsLabel.Size = new System.Drawing.Size(101, 20);
+            this.totalPartsLabel.TabIndex = 0;
+            this.totalPartsLabel.Text = "Total parts: 0";
+            // 
             // splitContainer2
             // 
             this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -287,7 +409,7 @@
             this.splitContainer2.Panel2.AutoScroll = true;
             this.splitContainer2.Panel2.BackColor = System.Drawing.Color.LightGray;
             this.splitContainer2.Panel2.Controls.Add(this.panel2);
-            this.splitContainer2.Size = new System.Drawing.Size(1326, 785);
+            this.splitContainer2.Size = new System.Drawing.Size(1326, 733);
             this.splitContainer2.SplitterDistance = 1077;
             this.splitContainer2.TabIndex = 6;
             // 
@@ -295,11 +417,9 @@
             // 
             this.treeListView2.AllowCellEditorsToProcessMouseWheel = false;
             this.treeListView2.AllowColumnReorder = true;
-            this.treeListView2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeListView2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.treeListView2.HideSelection = false;
-            this.treeListView2.Location = new System.Drawing.Point(3, 35);
+            this.treeListView2.Location = new System.Drawing.Point(0, 35);
             this.treeListView2.Name = "treeListView2";
             this.treeListView2.SelectColumnsMenuStaysOpen = false;
             this.treeListView2.SelectColumnsOnRightClickBehaviour = BrightIdeasSoftware.ObjectListView.ColumnSelectBehaviour.Submenu;
@@ -307,7 +427,7 @@
             this.treeListView2.ShowGroups = false;
             this.treeListView2.ShowImagesOnSubItems = true;
             this.treeListView2.ShowItemToolTips = true;
-            this.treeListView2.Size = new System.Drawing.Size(1071, 747);
+            this.treeListView2.Size = new System.Drawing.Size(1077, 698);
             this.treeListView2.TabIndex = 4;
             this.treeListView2.UseCompatibleStateImageBehavior = false;
             this.treeListView2.UseFilterIndicator = true;
@@ -374,6 +494,24 @@
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(1320, 103);
             this.panel6.TabIndex = 1;
+            // 
+            // totalAssemblyCostLabel
+            // 
+            this.totalAssemblyCostLabel.AutoSize = true;
+            this.totalAssemblyCostLabel.Location = new System.Drawing.Point(495, 79);
+            this.totalAssemblyCostLabel.Name = "totalAssemblyCostLabel";
+            this.totalAssemblyCostLabel.Size = new System.Drawing.Size(178, 20);
+            this.totalAssemblyCostLabel.TabIndex = 8;
+            this.totalAssemblyCostLabel.Text = "Total assembly cost: 0 €";
+            // 
+            // assemblyCostLabel
+            // 
+            this.assemblyCostLabel.AutoSize = true;
+            this.assemblyCostLabel.Location = new System.Drawing.Point(495, 44);
+            this.assemblyCostLabel.Name = "assemblyCostLabel";
+            this.assemblyCostLabel.Size = new System.Drawing.Size(154, 20);
+            this.assemblyCostLabel.TabIndex = 7;
+            this.assemblyCostLabel.Text = "Assembly cost: 0 €/h";
             // 
             // combinedAssemblyDurationLabel
             // 
@@ -474,11 +612,9 @@
             // 
             this.treeListView3.AllowCellEditorsToProcessMouseWheel = false;
             this.treeListView3.AllowColumnReorder = true;
-            this.treeListView3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeListView3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.treeListView3.HideSelection = false;
-            this.treeListView3.Location = new System.Drawing.Point(4, 35);
+            this.treeListView3.Location = new System.Drawing.Point(0, 35);
             this.treeListView3.Name = "treeListView3";
             this.treeListView3.SelectColumnsMenuStaysOpen = false;
             this.treeListView3.SelectColumnsOnRightClickBehaviour = BrightIdeasSoftware.ObjectListView.ColumnSelectBehaviour.Submenu;
@@ -486,7 +622,7 @@
             this.treeListView3.ShowGroups = false;
             this.treeListView3.ShowImagesOnSubItems = true;
             this.treeListView3.ShowItemToolTips = true;
-            this.treeListView3.Size = new System.Drawing.Size(1071, 695);
+            this.treeListView3.Size = new System.Drawing.Size(1078, 698);
             this.treeListView3.TabIndex = 5;
             this.treeListView3.UseCompatibleStateImageBehavior = false;
             this.treeListView3.UseFilterIndicator = true;
@@ -549,148 +685,6 @@
             this.pricesButton.Text = "Prices";
             this.pricesButton.UseVisualStyleBackColor = true;
             this.pricesButton.Click += new System.EventHandler(this.pricesButton_Click);
-            // 
-            // assemblyCostLabel
-            // 
-            this.assemblyCostLabel.AutoSize = true;
-            this.assemblyCostLabel.Location = new System.Drawing.Point(495, 44);
-            this.assemblyCostLabel.Name = "assemblyCostLabel";
-            this.assemblyCostLabel.Size = new System.Drawing.Size(154, 20);
-            this.assemblyCostLabel.TabIndex = 7;
-            this.assemblyCostLabel.Text = "Assembly cost: 0 €/h";
-            // 
-            // totalAssemblyCostLabel
-            // 
-            this.totalAssemblyCostLabel.AutoSize = true;
-            this.totalAssemblyCostLabel.Location = new System.Drawing.Point(495, 79);
-            this.totalAssemblyCostLabel.Name = "totalAssemblyCostLabel";
-            this.totalAssemblyCostLabel.Size = new System.Drawing.Size(178, 20);
-            this.totalAssemblyCostLabel.TabIndex = 8;
-            this.totalAssemblyCostLabel.Text = "Total assembly cost: 0 €";
-            // 
-            // totalPartsLabel
-            // 
-            this.totalPartsLabel.AutoSize = true;
-            this.totalPartsLabel.Location = new System.Drawing.Point(15, 13);
-            this.totalPartsLabel.Name = "totalPartsLabel";
-            this.totalPartsLabel.Size = new System.Drawing.Size(101, 20);
-            this.totalPartsLabel.TabIndex = 0;
-            this.totalPartsLabel.Text = "Total parts: 0";
-            // 
-            // totalPartsCostLabel
-            // 
-            this.totalPartsCostLabel.AutoSize = true;
-            this.totalPartsCostLabel.Location = new System.Drawing.Point(15, 49);
-            this.totalPartsCostLabel.Name = "totalPartsCostLabel";
-            this.totalPartsCostLabel.Size = new System.Drawing.Size(148, 20);
-            this.totalPartsCostLabel.TabIndex = 1;
-            this.totalPartsCostLabel.Text = "Total parts cost: 0 €";
-            // 
-            // useBlackSteel
-            // 
-            this.useBlackSteel.AutoSize = true;
-            this.useBlackSteel.Checked = true;
-            this.useBlackSteel.Location = new System.Drawing.Point(306, 40);
-            this.useBlackSteel.Name = "useBlackSteel";
-            this.useBlackSteel.Size = new System.Drawing.Size(111, 24);
-            this.useBlackSteel.TabIndex = 2;
-            this.useBlackSteel.TabStop = true;
-            this.useBlackSteel.Text = "Black steel";
-            this.useBlackSteel.UseVisualStyleBackColor = true;
-            this.useBlackSteel.CheckedChanged += new System.EventHandler(this.useSteel_CheckedChanged);
-            // 
-            // useStainlessSteel
-            // 
-            this.useStainlessSteel.AutoSize = true;
-            this.useStainlessSteel.Location = new System.Drawing.Point(306, 70);
-            this.useStainlessSteel.Name = "useStainlessSteel";
-            this.useStainlessSteel.Size = new System.Drawing.Size(137, 24);
-            this.useStainlessSteel.TabIndex = 3;
-            this.useStainlessSteel.Text = "Stainless steel";
-            this.useStainlessSteel.UseVisualStyleBackColor = true;
-            this.useStainlessSteel.CheckedChanged += new System.EventHandler(this.useSteel_CheckedChanged);
-            // 
-            // toolboxTypeLabel
-            // 
-            this.toolboxTypeLabel.AutoSize = true;
-            this.toolboxTypeLabel.Location = new System.Drawing.Point(302, 13);
-            this.toolboxTypeLabel.Name = "toolboxTypeLabel";
-            this.toolboxTypeLabel.Size = new System.Drawing.Size(102, 20);
-            this.toolboxTypeLabel.TabIndex = 4;
-            this.toolboxTypeLabel.Text = "Toolbox type:";
-            // 
-            // toolboxWeightLabel
-            // 
-            this.toolboxWeightLabel.AutoSize = true;
-            this.toolboxWeightLabel.Location = new System.Drawing.Point(519, 13);
-            this.toolboxWeightLabel.Name = "toolboxWeightLabel";
-            this.toolboxWeightLabel.Size = new System.Drawing.Size(114, 20);
-            this.toolboxWeightLabel.TabIndex = 5;
-            this.toolboxWeightLabel.Text = "Toolbox weight";
-            // 
-            // toolboxWeightTextBox
-            // 
-            this.toolboxWeightTextBox.Location = new System.Drawing.Point(639, 10);
-            this.toolboxWeightTextBox.Name = "toolboxWeightTextBox";
-            this.toolboxWeightTextBox.Size = new System.Drawing.Size(100, 26);
-            this.toolboxWeightTextBox.TabIndex = 6;
-            this.toolboxWeightTextBox.Text = "0";
-            this.toolboxWeightTextBox.TextChanged += new System.EventHandler(this.textBox_TextChanged);
-            this.toolboxWeightTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.numbersOnlyTextBox_KeyPress);
-            // 
-            // toolboxPriceLabel
-            // 
-            this.toolboxPriceLabel.AutoSize = true;
-            this.toolboxPriceLabel.Location = new System.Drawing.Point(519, 44);
-            this.toolboxPriceLabel.Name = "toolboxPriceLabel";
-            this.toolboxPriceLabel.Size = new System.Drawing.Size(153, 20);
-            this.toolboxPriceLabel.TabIndex = 7;
-            this.toolboxPriceLabel.Text = "Toolbox price: 0 €/kg";
-            // 
-            // toolboxTotalPriceLabel
-            // 
-            this.toolboxTotalPriceLabel.AutoSize = true;
-            this.toolboxTotalPriceLabel.Location = new System.Drawing.Point(519, 72);
-            this.toolboxTotalPriceLabel.Name = "toolboxTotalPriceLabel";
-            this.toolboxTotalPriceLabel.Size = new System.Drawing.Size(132, 20);
-            this.toolboxTotalPriceLabel.TabIndex = 8;
-            this.toolboxTotalPriceLabel.Text = "Toolbox price: 0 €";
-            // 
-            // totalPartsTabCostLabel
-            // 
-            this.totalPartsTabCostLabel.AutoSize = true;
-            this.totalPartsTabCostLabel.Location = new System.Drawing.Point(813, 42);
-            this.totalPartsTabCostLabel.Name = "totalPartsTabCostLabel";
-            this.totalPartsTabCostLabel.Size = new System.Drawing.Size(234, 20);
-            this.totalPartsTabCostLabel.TabIndex = 9;
-            this.totalPartsTabCostLabel.Text = "Total parts and toolbox cost: 0 €";
-            // 
-            // totalPartsTabCostGeneralLabel
-            // 
-            this.totalPartsTabCostGeneralLabel.AutoSize = true;
-            this.totalPartsTabCostGeneralLabel.Location = new System.Drawing.Point(15, 19);
-            this.totalPartsTabCostGeneralLabel.Name = "totalPartsTabCostGeneralLabel";
-            this.totalPartsTabCostGeneralLabel.Size = new System.Drawing.Size(234, 20);
-            this.totalPartsTabCostGeneralLabel.TabIndex = 10;
-            this.totalPartsTabCostGeneralLabel.Text = "Total parts and toolbox cost: 0 €";
-            // 
-            // totalAssemblyCostGeneralLabel
-            // 
-            this.totalAssemblyCostGeneralLabel.AutoSize = true;
-            this.totalAssemblyCostGeneralLabel.Location = new System.Drawing.Point(15, 58);
-            this.totalAssemblyCostGeneralLabel.Name = "totalAssemblyCostGeneralLabel";
-            this.totalAssemblyCostGeneralLabel.Size = new System.Drawing.Size(178, 20);
-            this.totalAssemblyCostGeneralLabel.TabIndex = 11;
-            this.totalAssemblyCostGeneralLabel.Text = "Total assembly cost: 0 €";
-            // 
-            // finalPriceLabel
-            // 
-            this.finalPriceLabel.AutoSize = true;
-            this.finalPriceLabel.Location = new System.Drawing.Point(371, 19);
-            this.finalPriceLabel.Name = "finalPriceLabel";
-            this.finalPriceLabel.Size = new System.Drawing.Size(111, 20);
-            this.finalPriceLabel.TabIndex = 12;
-            this.finalPriceLabel.Text = "Final price: 0 €";
             // 
             // MainForm
             // 

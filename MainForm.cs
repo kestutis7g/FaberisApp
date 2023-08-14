@@ -13,12 +13,12 @@ namespace Faberis
 {
     public partial class MainForm : Form
     {
-        private List<Node> data;
-        private List<Node> partsData;
-        private Calculations calculations;
+        private List<Node> Data;
+        private List<Node> PartsData;
+        private Calculations Calculations;
 
-        private Prices prices;
-        private bool stainlessSteelToolBox = false;
+        private Prices Prices;
+        private bool StainlessSteelToolbox = false;
 
         // constructor
         public MainForm()
@@ -38,8 +38,8 @@ namespace Faberis
             this.splitContainer2.SplitterDistance = (80 * this.splitContainer2.Size.Width / 100);
             this.splitContainer3.SplitterDistance = (80 * this.splitContainer3.Size.Width / 100);
 
-            this.prices = new Prices();
-            this.calculations = new Calculations();
+            this.Prices = new Prices();
+            this.Calculations = new Calculations();
 
             RefreshCalculations();
 
@@ -122,7 +122,7 @@ namespace Faberis
 
 
             // set the tree roots
-            this.treeListView1.Roots = data;
+            this.treeListView1.Roots = Data;
             this.treeListView1.CheckBoxes = true;
         }
 
@@ -203,7 +203,7 @@ namespace Faberis
             this.treeListView3.AllColumns.Add(colFileLocation);
 
             // set the tree roots (filter only Assembly type nodes)
-            this.treeListView3.Roots = data.Where(x => x.ComponentType.ToString() == "Assembly");
+            this.treeListView3.Roots = Data.Where(x => x.ComponentType.ToString() == "Assembly");
             this.treeListView3.CheckBoxes = true;
         }
 
@@ -301,7 +301,7 @@ namespace Faberis
             this.treeListView2.AllColumns.Add(colSheetThickness);
 
             // set the tree roots
-            this.treeListView2.Roots = partsData;
+            this.treeListView2.Roots = PartsData;
             this.treeListView2.CheckBoxes = true;
         }
 
@@ -310,8 +310,8 @@ namespace Faberis
         /// </summary>
         private void InitializeData()
         {
-            data = new List<Node>(); 
-            partsData = new List<Node>(); 
+            Data = new List<Node>(); 
+            PartsData = new List<Node>(); 
 
             var text = File.ReadAllText("..\\..\\Data.csv");
 
@@ -328,13 +328,13 @@ namespace Faberis
                 if (info[0].Split('.').Length > 1)
                 {
                     //child node
-                    FindDataParent(info[0], data, partInfo);
+                    FindDataParent(info[0], Data, partInfo);
                     continue;
                 }
                 //root node
-                AddNode(data, partInfo);
+                AddNode(Data, partInfo);
             }
-            CalculateChildNodeAssemblyDuration(data);
+            CalculateChildNodeAssemblyDuration(Data);
         }
 
         /// <summary>
@@ -401,7 +401,7 @@ namespace Faberis
 
             if(node.ComponentType.ToString() == "Part")
             {
-                partsData.Add(node);
+                PartsData.Add(node);
             }
         }
 
@@ -438,7 +438,7 @@ namespace Faberis
 
         private void RefreshCalculations()
         {
-            calculations.Calculate(data, partsData);
+            Calculations.Calculate(Data, PartsData);
 
             //ASSEMBLY TAB
             double individualComponentsAssemblyDuration = 0;
@@ -446,43 +446,44 @@ namespace Faberis
             double.TryParse(individualComponentsAssemblyTextBox.Text, out individualComponentsAssemblyDuration);
             double.TryParse(assemblyToParentTextBox.Text, out assemblyToParentDuration);
 
-            double combinedAssemblyDuration = calculations.rootChildNodeAssemblyDuration + individualComponentsAssemblyDuration + assemblyToParentDuration;
-            double assemblyPrice = this.prices.GetById(3).Value;
+            double combinedAssemblyDuration = Calculations.rootChildNodeAssemblyDuration + individualComponentsAssemblyDuration + assemblyToParentDuration;
+            double assemblyPrice = this.Prices.GetById(3).Value;
             double totalAssemblyCost = assemblyPrice * combinedAssemblyDuration;
 
-            rootChildNodeAssemblyTime.Text = "Child node assembly time: " + calculations.rootChildNodeAssemblyDuration + "h";
+            rootChildNodeAssemblyTime.Text = "Child node assembly time: " + Calculations.rootChildNodeAssemblyDuration + "h";
             combinedAssemblyDurationLabel.Text = "Combined assembly duration: " + combinedAssemblyDuration + "h";
             assemblyCostLabel.Text = "Assembly cost: " + assemblyPrice + " €/h";
             totalAssemblyCostLabel.Text        = "Total assembly cost: " + totalAssemblyCost + " €";
             totalAssemblyCostGeneralLabel.Text = "Total assembly cost: " + totalAssemblyCost + " €";
 
             //PARTS TAB
-            totalPartsLabel.Text = "Total parts: " + calculations.totalParts;
-            totalPartsCostLabel.Text = "Total parts cost: " + calculations.totalPartsCost + " €";
+            totalPartsLabel.Text = "Total parts: " + Calculations.totalParts;
+            totalPartsCostLabel.Text = "Total parts cost: " + Calculations.totalPartsCost + " €";
 
             double toolboxPrice = 0;
             double toolboxWeight = 0;
             double.TryParse(toolboxWeightTextBox.Text, out toolboxWeight);
 
-            switch (stainlessSteelToolBox)
+            switch (StainlessSteelToolbox)
             {
                 case false:
-                    toolboxPrice = this.prices.GetById(10).Value;
+                    toolboxPrice = this.Prices.GetById(10).Value;
                     break;
                 case true:
-                    toolboxPrice = this.prices.GetById(11).Value;
+                    toolboxPrice = this.Prices.GetById(11).Value;
                     break;
                 default:
                     toolboxPrice = 0;
                     break;
             }
 
+
             toolboxPriceLabel.Text = "Toolbox price: " + toolboxPrice + " €/kg";
             toolboxTotalPriceLabel.Text = "Toolbox price: " + (toolboxPrice * toolboxWeight) + " €";
 
-            double totalPartsTabCost = calculations.totalPartsCost + (toolboxPrice * toolboxWeight);
-            totalPartsTabCostLabel.Text        = "Total parts & toolbox cost: " + totalPartsTabCost + " €";
-            totalPartsTabCostGeneralLabel.Text = "Total parts & toolbox cost: " + totalPartsTabCost + " €";
+            double totalPartsTabCost = Calculations.totalPartsCost + (toolboxPrice * toolboxWeight);
+            totalPartsTabCostLabel.Text        = "Total parts and toolbox cost: " + totalPartsTabCost + " €";
+            totalPartsTabCostGeneralLabel.Text = "Total parts and toolbox cost: " + totalPartsTabCost + " €";
 
             finalPriceLabel.Text = "Final price: " + (totalPartsTabCost + totalAssemblyCost) + " €";
         }
@@ -503,7 +504,7 @@ namespace Faberis
         {
             foreach (Node item in (sender as TreeListView).SelectedObjects)
             {
-                OpenItemDetailedView(item);
+                OpenItemDetailedView(item, (sender as TreeListView).Name == "treeListView2");
             }
         }
 
@@ -514,7 +515,9 @@ namespace Faberis
         /// <param name="e"></param>
         private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (treeListView1.SelectedObjects.Count == 0)
+            if (treeListView1.SelectedObjects.Count == 0 &&
+                treeListView2.SelectedObjects.Count == 0 &&
+                treeListView3.SelectedObjects.Count == 0)
             {
                 e.Cancel = true;
             }
@@ -525,17 +528,26 @@ namespace Faberis
             var toolStripMenuItem = (ToolStripMenuItem)sender;
             if (toolStripMenuItem.Name == "Open")
             {
-                foreach (Node item in treeListView1.SelectedObjects)
+                
+                if (tabControl1.SelectedTab.Name == "tabPageGeneral")
                 {
-                    OpenItemDetailedView(item);
+                    treeListView_ItemActivate(this.treeListView1, e);
+                }
+                else if(tabControl1.SelectedTab.Name == "tabPageParts")
+                {
+                    treeListView_ItemActivate(this.treeListView2, e);
+                }
+                else if (tabControl1.SelectedTab.Name == "tabPageAssemblies")
+                {
+                    treeListView_ItemActivate(this.treeListView3, e);
                 }
             }
         }
 
-        private void OpenItemDetailedView(Node item)
+        private void OpenItemDetailedView(Node item, bool showControls = false)
         {
-            var detailsForm = new DetailsForm();
-            detailsForm.data = item;
+            var detailsForm = new DetailsForm(item, this.PartsData, showControls);
+            //detailsForm.Data = item;
             detailsForm.Show();
         }
 
@@ -615,7 +627,7 @@ namespace Faberis
 
         private void useSteel_CheckedChanged(object sender, EventArgs e)
         {
-            this.stainlessSteelToolBox = this.useStainlessSteel.Checked;
+            this.StainlessSteelToolbox = this.useStainlessSteel.Checked;
             RefreshCalculations();
         }
     }

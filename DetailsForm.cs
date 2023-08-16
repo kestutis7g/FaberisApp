@@ -23,10 +23,9 @@ namespace Faberis
             {
                 previousButton.Visible = false;
                 nextButton.Visible = false;
-                tabControl1.Dock = DockStyle.Fill;
+                controlsPanel.Visible = false;
+                tabControl1.Dock = DockStyle.Top;
             }
-
-            this.tabControl1.TabPages.Remove(this.tabControl1.TabPages[1]);
 
         }
 
@@ -39,6 +38,16 @@ namespace Faberis
         {
             this.index = this.List.IndexOf(Data);
             UpdateControls();
+            if(Data.ComponentType.ToString() == "Assembly")
+            {
+                RemoveTabs("assembly");
+                ResizeTabControl("assembly");
+            }
+            else if(Data.ComponentType.ToString() == "Part")
+            {
+                RemoveTabs("part");
+                ResizeTabControl("part");
+            }
 
             DynamicTypeDescriptor dt = new DynamicTypeDescriptor(typeof(Node));
             //hide unwanted properties
@@ -104,6 +113,38 @@ namespace Faberis
             else
             {
                 nextButton.Enabled = true;
+            }
+        }
+
+        private void RemoveTabs(string formType)
+        {
+            if(formType == "part")
+            {
+                this.tabControl1.TabPages.RemoveByKey("designingTabPage");
+                this.tabControl1.TabPages.RemoveByKey("weldingTabPage");
+                this.tabControl1.TabPages.RemoveByKey("assemblyAndPackagingTabPage");
+                this.tabControl1.TabPages.RemoveByKey("partsTabPage");
+                this.tabControl1.TabPages.RemoveByKey("otherCostsTabPage");
+            }
+            else if(formType == "assembly")
+            {
+                this.tabControl1.TabPages.RemoveByKey("manufacturingTabPage");
+                this.tabControl1.TabPages.RemoveByKey("stripsTabPage");
+                this.tabControl1.TabPages.RemoveByKey("purchasesTabPage");
+            }
+        }
+
+        private void ResizeTabControl(string formType)
+        {
+            if (formType == "part")
+            {
+                assemblyDetailsPanel.Visible = false;
+                this.tabControl1.Height = partDetailsPanel.Location.Y;
+            }
+            else if (formType == "assembly")
+            {
+                partDetailsPanel.Visible = false;
+                this.tabControl1.Height = assemblyDetailsPanel.Location.Y;
             }
         }
     }
